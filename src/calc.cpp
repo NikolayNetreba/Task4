@@ -105,31 +105,31 @@ ErrorsCalc out_value(stack_t* stack){
 
     return CALC_OK;
 }
-
-int main(){
-    stack_t* stack = STACK_INIT(10, "stack");
-
-    char buff[10] = {};
-    elem_t value = 0;
-
-    while(1){
-        scanf("%s", buff);
-        if(buff[0] == 'P'){
-
-            scanf("%d", &value);
-
-            push_stack(stack, value * accuracy);
-
-        } else if(buff[0] == 'A'){
-            addition(stack);
-        } else if(buff[0] == 'S'){
-            subtraction(stack);
-        } else if(buff[0] == 'D'){
-            division(stack);
-        } else if(buff[0] == 'O'){
-            out_value(stack);
-        } else if(buff[0] == 'H'){
-            return 0;
-        }
-    }
-}
+//
+// int main(){
+//     stack_t* stack = STACK_INIT(10, "stack");
+//
+//     char buff[10] = {};
+//     elem_t value = 0;
+//
+//     while(1){
+//         scanf("%s", buff);
+//         if(buff[0] == 'P'){
+//
+//             scanf("%d", &value);
+//
+//             push_stack(stack, value * accuracy);
+//
+//         } else if(buff[0] == 'A'){
+//             addition(stack);
+//         } else if(buff[0] == 'S'){
+//             subtraction(stack);
+//         } else if(buff[0] == 'D'){
+//             division(stack);
+//         } else if(buff[0] == 'O'){
+//             out_value(stack);
+//         } else if(buff[0] == 'H'){
+//             return 0;
+//         }
+//     }
+// }

@@ -15,9 +15,8 @@
 #define ERROR_VALUE -1
 #define BUFFER_SIZE 5
 #define SPEC_BUFFER_SIZE "4"
-#define PUSH_CODE 1
+
 #define PUSH_TEXT_ARG 111
-#define POP_CODE 2
 #define POP_TEXT_ARG 112
 
 typedef struct{
@@ -25,17 +24,30 @@ typedef struct{
     uint8_t opCode;
 } processorOP;
 
+typedef enum{
+    PUSH_CODE = 1,
+    POP_CODE = 2,
+    OUT_CODE = 3,
+    HLT_CODE = 4,
+    ADD_CODE = 5,
+    SUB_CODE = 6,
+    MUL_CODE = 7,
+    DIV_CODE = 8,
+    SQRT_CODE = 9
+} command_code;
+
 //TODO Сделать байт отвечающий за тип данных.
 processorOP commands[] = {
-    {"PUSH", 1},
-    {"POP", 2},
-    {"DIV", 3},
-    {"MUL", 4},
-    {"SUB", 5},
-    {"SQRT", 6},
-    {"ADD", 7},
-    {"HLT", 8},
-    {"OUT", 9}
+    {"PUSH", PUSH_CODE},
+    {"POP", POP_CODE},
+    {"OUT", OUT_CODE},
+    {"HLT", HLT_CODE},
+
+    {"ADD", ADD_CODE},
+    {"SUB", SUB_CODE},
+    {"MUL", MUL_CODE},
+    {"DIV", DIV_CODE},
+    {"SQRT", SQRT_CODE},
 };
 
 processorOP arg[] = {
@@ -45,6 +57,8 @@ processorOP arg[] = {
 };
 
 bool check_line(FILE* input){
+    assert(input);
+
     int ch = 0;
     while((ch = fgetc(input)) != EOF && ch != '\n'){
         if(!isspace(ch)){
@@ -56,6 +70,10 @@ bool check_line(FILE* input){
 }
 
 void get_text_arg(elem_t* argValue, size_t argCnt, FILE* input, uint8_t* opCode, uint8_t newCode){
+    assert(argValue);
+    assert(input);
+    assert(opCode);
+
     char argText[5] = {};
     if(fscanf(input, "%4s", argText) == 1){
         for(size_t i = 0; i < argCnt; i++){
@@ -73,6 +91,8 @@ void get_text_arg(elem_t* argValue, size_t argCnt, FILE* input, uint8_t* opCode,
 }
 
 off_t get_file_size(FILE* file){
+    assert(file);
+
     int fd = fileno(file);
     assert(fd != -1 && "Error file descriptor");
 
@@ -83,6 +103,10 @@ off_t get_file_size(FILE* file){
 }
 
 void assembly(FILE* input, uint8_t* byteCode, size_t* currentByte){
+    assert(input);
+    assert(byteCode);
+    assert(currentByte);
+
     FILE* byteCodeTxt = fopen("byte_code.txt", "w");
     assert(byteCodeTxt && "Error opening file");
 
@@ -134,6 +158,17 @@ void assembly(FILE* input, uint8_t* byteCode, size_t* currentByte){
     fclose(byteCodeTxt);
 }
 
+void write_to_file(uint8_t* byteCode, size_t currentByte){
+    assert(byteCode);
+
+    int byteCodeFile = open("byte_code.bin", O_WRONLY | O_CREAT | O_TRUNC | O_BINARY);
+    assert(byteCodeFile != -1 && "Error opening");
+
+    write(byteCodeFile, byteCode, currentByte);
+
+    close(byteCodeFile);
+}
+
 int main(){
     // open file to read
     FILE* input = fopen("input.txt", "r");
@@ -145,11 +180,7 @@ int main(){
     assembly(input, byteCode, &currentByte);
 
     //open file to write
-    int byteCodeFile = open("byte_code.bin", O_WRONLY | O_CREAT | O_TRUNC | O_BINARY);
-    assert(byteCodeFile != -1 && "Error opening");
+    write_to_file(byteCode, currentByte);
 
-    write(byteCodeFile, byteCode, currentByte);
-
-    close(byteCodeFile);
     fclose(input);
 }
