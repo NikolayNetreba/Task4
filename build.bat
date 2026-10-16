@@ -1,2 +1,2 @@
-g++ src/*.cpp -Iinclude
-a.exe
+assembler.exe
+spu.exe

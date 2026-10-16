@@ -3,15 +3,10 @@
 #include <math.h>
 
 #include "stack.h"
+#include "calc.h"
+#include "spu.h"
+#include "assembly.h"
 
-#define accuracy 1000
-
-typedef enum{
-    CALC_OK,
-    CALC_INSUFFICIENT_ARG,
-    CALC_DIVISION_BY_ZERO,
-    CALC_SQRT_ERROR
-} ErrorsCalc;
 
 ErrorsCalc addition(stack_t *stack) {
     assert( stack );
@@ -72,7 +67,9 @@ ErrorsCalc multiply(stack_t* stack){
     pop_stack(stack, &val1);
     pop_stack(stack, &val2);
 
-    push_stack(stack, val1 * val2);
+    push_stack(stack, val1 * val2 / accuracy);
+
+    return CALC_OK;
 }
 
 ErrorsCalc get_sqrt(stack_t* stack){
@@ -105,6 +102,56 @@ ErrorsCalc out_value(stack_t* stack){
 
     return CALC_OK;
 }
+
+void push(spu_t* spu, command_type opType){
+    elem_t arg = 0;
+    memcpy(&arg, &spu->byteCode[spu->cIp], sizeof(elem_t));
+    spu->cIp += sizeof(elem_t);
+
+    if(opType == PUSH_REG_ARG){
+        switch((argumentCode) arg){
+            case AX_CODE:
+                arg = spu->AX;
+                break;
+            case BX_CODE:
+                arg = spu->BX;
+                break;
+            case CX_CODE:
+                arg = spu->CX;
+                break;
+            default:
+                exit(EXIT_FAILURE);
+        }
+    }
+
+    push_stack(spu->stk, arg * accuracy);
+}
+
+void pop(spu_t* spu, command_type opType){
+    elem_t val = 0;
+    pop_stack(spu->stk, &val);
+
+    if(opType == POP_REG_ARG){
+        elem_t arg = 0;
+        memcpy(&arg, &spu->byteCode[spu->cIp], sizeof(elem_t));
+        spu->cIp += sizeof(elem_t);
+
+        switch((argumentCode) arg){
+            case AX_CODE:
+                spu->AX = val / accuracy;
+                break;
+            case BX_CODE:
+                spu->BX = val / accuracy;
+                break;
+            case CX_CODE:
+                spu->CX = val / accuracy;
+                break;
+            default:
+                exit(EXIT_FAILURE);
+        }
+    }
+}
+
 //
 // int main(){
 //     stack_t* stack = STACK_INIT(10, "stack");

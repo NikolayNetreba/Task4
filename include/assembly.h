@@ -1,3 +1,18 @@
+#pragma once
+
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stddef.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <sys/types.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <stdint.h>
+
+#include "config.h"
 
 #define ERROR_VALUE -1
 #define BUFFER_SIZE 10
@@ -87,3 +102,5 @@ off_t get_file_size(FILE* file);
 void write_to_file(uint8_t* byteCode, size_t currentByte);
 
 void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* currentByte, size_t* currentNumber, const int number);
+
+bool is_jump_command(command_code opCode);

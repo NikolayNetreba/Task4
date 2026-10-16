@@ -1,16 +1,3 @@
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stddef.h>
-#include <assert.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <sys/types.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <stdint.h>
-
-#include "config.h"
 #include "assembly.h"
 
 #define DEBUG
@@ -52,7 +39,6 @@ bool check_line(FILE* input){
 
     int ch = 0;
     while((ch = fgetc(input)) != EOF && ch != '\n'){
-        // printf("%c : ", ch);
         if(!isspace(ch)){
             return true;
         }
@@ -101,6 +87,13 @@ command_code get_opCode(char* temp, size_t commandsCnt){
     return NOT_A_CODE;
 }
 
+bool is_jump_command(command_code opCode) {
+    return opCode == JA_CODE  || opCode == JAE_CODE ||
+           opCode == JB_CODE  || opCode == JBE_CODE ||
+           opCode == JE_CODE  || opCode == JNE_CODE ||
+           opCode == JMP_CODE;
+}
+
 void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* currentByte, size_t* currentNumber, const int number){
     assert(input);
     assert(byteCode);
@@ -121,8 +114,7 @@ void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* current
         elem_t argValue = 0;
 
         if(temp[0] == ':'){
-            opCode = LABEL_CODE;
-
+            opCode = LABEL_CODE; // TODO добавить проверку на повторное определение метки
             if(number == 1){
                 labelTable[*currentNumber].name = strdup(temp);
                 labelTable[(*currentNumber)++].ip = *currentByte;
@@ -131,7 +123,7 @@ void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* current
 
         if(opCode == PUSH_CODE){
             if(fscanf(input, "%d", &argValue) == 0){
-                get_text_arg(&argValue, argCnt, input); // if argument is text
+                get_text_arg(&argValue, argCnt, input); // if argument is registor
                 opType = PUSH_REG_ARG;
             } else {
                 opType = PUSH_DEC_ARG;
@@ -152,9 +144,7 @@ void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* current
                 opType = NO_ARG;
             }
 
-        } else if(opCode == JA_CODE || opCode == JAE_CODE ||
-                  opCode == JB_CODE || opCode == JBE_CODE ||
-                  opCode == JE_CODE || opCode == JNE_CODE || opCode == JMP_CODE) {
+        } else if(is_jump_command(opCode)) {
             opType = J_POINT_ARG;
 
             char argLabel[BUFFER_SIZE] = {};
@@ -169,7 +159,7 @@ void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* current
         }
 
         if(check_line(input)){
-            fprintf(stderr, "%s\n", temp);
+            fprintf(stderr, "Syntax error near: %s\n", temp);
             assert(0 && "input error");
         }
 
@@ -184,7 +174,6 @@ void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* current
             fprintf(byteCodeTxt, "\n%d ", opCode);
             #endif
         }
-
 
         if(opCode == PUSH_CODE || opCode == POP_CODE || opType == J_POINT_ARG){
             byteCode[(*currentByte)++] = opType;
