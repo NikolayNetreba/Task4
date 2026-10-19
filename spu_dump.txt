@@ -1,0 +1,47 @@
+
+Command = PUSH, Type = PUSH_DEC
+=== BYTECODE DUMP (cIp: 0x0000 / 0) ===
+ -> [0x0000] PUSH       (code: 0x01) arg = 10
+    [0x0006] JMP        (code: 0x0A) arg = 19
+    [0x000C] PUSH       (code: 0x01) arg = 5
+    [0x0012] OUT        (code: 0x03) arg = 0
+============================================
+AX = 0
+BX = 0
+CX = 0
+
+  *[  0] - 10
+--------------------------------------------------
+
+Command = JMP, Type = J_POINT
+=== BYTECODE DUMP (cIp: 0x0006 / 6) ===
+    [0x0000] PUSH       (code: 0x01) arg = 10
+ -> [0x0006] JMP        (code: 0x0A) arg = 19
+    [0x000C] PUSH       (code: 0x01) arg = 5
+    [0x0012] OUT        (code: 0x03) arg = 0
+============================================
+AX = 0
+BX = 0
+CX = 0
+
+  *[  0] - 10
+--------------------------------------------------
+
+Command = OUT, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0013 / 19) ===
+    [0x0000] PUSH       (code: 0x01)
+    [0x0002] JMP        (code: 0x0A)
+    [0x0004]            (code: 0x00)
+    [0x0006] JMP        (code: 0x0A)
+    [0x0008]            (code: 0x13)
+    [0x000A]            (code: 0x00)
+    [0x000C] PUSH       (code: 0x01)
+    [0x000E] ADD        (code: 0x05)
+    [0x0010]            (code: 0x00)
+    [0x0012] OUT        (code: 0x03)
+============================================
+AX = 0
+BX = 0
+CX = 0
+
+--------------------------------------------------

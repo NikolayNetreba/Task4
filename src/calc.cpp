@@ -2,11 +2,7 @@
 #include <assert.h>
 #include <math.h>
 
-#include "stack.h"
 #include "calc.h"
-#include "spu.h"
-#include "assembly.h"
-
 
 ErrorsCalc addition(stack_t *stack) {
     assert( stack );

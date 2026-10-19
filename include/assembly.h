@@ -57,7 +57,7 @@ typedef struct{
     command_code opCode;
 } processorOP;
 
-processorOP commands[] = {
+const processorOP commands[] = {
     {"PUSH", PUSH_CODE},
     {"POP", POP_CODE},
     {"OUT", OUT_CODE},
@@ -89,7 +89,7 @@ typedef struct{
     argumentCode argCode;
 } argOp;
 
-argOp arg[] = {
+const argOp argView[] = {
     {"AX", AX_CODE},
     {"BX", BX_CODE},
     {"CX", CX_CODE},

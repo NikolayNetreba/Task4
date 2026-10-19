@@ -1,5 +1,9 @@
 #pragma once
 
+#include "stack.h"
+#include "spu.h"
+#include "assembly.h"
+
 #define accuracy 1000
 
 typedef enum{

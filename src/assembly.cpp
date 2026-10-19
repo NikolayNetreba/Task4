@@ -54,8 +54,8 @@ void get_text_arg(elem_t* argValue, size_t argCnt, FILE* input){
     char argText[5] = {};
     if(fscanf(input, "%4s", argText) == 1){
         for(size_t i = 0; i < argCnt; i++){
-            if(strcmp(argText, arg[i].name) == 0){
-                *argValue = arg[i].argCode;
+            if(strcmp(argText, argView[i].name) == 0){
+                *argValue = argView[i].argCode;
             }
         }
 
@@ -106,7 +106,7 @@ void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* current
 
     char temp[BUFFER_SIZE] = {};
     size_t commandsCnt = sizeof(commands) / sizeof(processorOP);
-    size_t argCnt = sizeof(arg) / sizeof(processorOP);
+    size_t argCnt = sizeof(argView) / sizeof(processorOP);
 
     while(fscanf(input, "%" SPEC_BUFFER_SIZE "s", temp) != EOF){
         command_code opCode = get_opCode(temp, commandsCnt);
@@ -119,6 +119,7 @@ void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* current
                 labelTable[*currentNumber].name = strdup(temp);
                 labelTable[(*currentNumber)++].ip = *currentByte;
             }
+            continue;
         }
 
         if(opCode == PUSH_CODE){
@@ -129,7 +130,7 @@ void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* current
                 opType = PUSH_DEC_ARG;
             }
         } else if(opCode == POP_CODE){
-            char nextCh = fgetc(input);
+            char nextCh = fgetc(input); // Это для того чтобы обработать pop без аргумента
             while(nextCh == ' ' || nextCh == '\t'){
                 nextCh = fgetc(input);
             }
@@ -173,7 +174,7 @@ void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* current
             #ifdef DEBUG
             fprintf(byteCodeTxt, "\n%d ", opCode);
             #endif
-        }
+        } //TODO
 
         if(opCode == PUSH_CODE || opCode == POP_CODE || opType == J_POINT_ARG){
             byteCode[(*currentByte)++] = opType;

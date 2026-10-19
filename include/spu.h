@@ -9,7 +9,6 @@
 
 #include "assembly.h"
 #include "stack.h"
-#include "calc.h"
 
 typedef struct{
     stack_t* stk;
