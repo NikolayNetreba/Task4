@@ -10,11 +10,9 @@ spu: obj/spu.o obj/stack.o obj/calc.o
 	$(CXX) $(CXXFLAGS) $^ -o spu
 
 obj/%.o: src/%.cpp
-	if not exist obj mkdir obj
+	mkdir -p obj
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-
-clean:
-	del /q /f assembler.exe spu.exe 2>nul || title clean
-	rmdir /s /q obj assembler spu 2>nul || title clean
-
+clear:
+	rm -f assembler spu
+	rm -rf obj

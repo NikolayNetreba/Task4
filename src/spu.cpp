@@ -2,235 +2,300 @@
 #include "calc.h"
 #include "colors.h"
 
-int get_file_dp(char* name){
-    int fd = open(name, O_RDONLY | O_BINARY);
-    assert(fd != ERROR_VALUE && "Error file descriptor");
-
-    return fd;
-}
-
-off_t get_file_size(int fd){
-    struct stat fileInfo = {};
-    assert(fstat(fd, &fileInfo) != ERROR_VALUE && "Error fstat");
-
-    return fileInfo.st_size;
-}
-
-elem_t get_jmp_arg(spu_t* spu, command_type* opType){
-    *opType = (command_type) spu->byteCode[(spu->cIp)++];
-    elem_t arg = 0;
-    memcpy(&arg, &spu->byteCode[spu->cIp], sizeof(elem_t));
-    spu->cIp += sizeof(elem_t);
-
-    return arg;
-}
-
-void print_stack(stack_t* stk, FILE* file){
-    for(size_t i = 0; i < stk->size; i++){
-        fprintf(file, "  *[%3zu] - ", i);
-        fprintf(file, "%lg\n", (float)stk->data[i] / accuracy);
-    }
-}
-
-const char* print_command_name(command_code opCode){
-    size_t com_len = sizeof(commands) / sizeof(processorOP);
-
-    for(size_t i = 0; i < com_len; i++){
-        if(commands[i].opCode == opCode){
-            return commands[i].name;
-        }
-    }
-
-    return " ";
-}
-
-const char* print_command_type(command_type opType){
-    switch(opType){
-        case NO_ARG:
-            return "NO_ARG";
-        case PUSH_DEC_ARG:
-            return "PUSH_DEC";
-        case PUSH_REG_ARG:
-            return "PUSH_REG";
-        case POP_REG_ARG:
-            return "POP_REG";
-        case J_POINT_ARG:
-            return "J_POINT";
-        default:
-            return "ERROR";
-    }
-}
-
-const char* get_arg_name(argumentCode arg){
-    switch(arg){
-        case AX_CODE:
-            return "AX";
-        case BX_CODE:
-            return "BX";
-        case CX_CODE:
-            return "CX";
-        default:
-            return "ERROR";
-    }
-}
-void print_byteCode(uint8_t* byteCode, size_t cIp, FILE* file, off_t byte_code_size, command_type opType){
-    fprintf(file, "=== BYTECODE DUMP (cIp: 0x%04X / %d) ===\n", cIp, cIp);
-
-    size_t i = 0;
-    while(i < byte_code_size){
-        if(cIp == i){
-            fprintf(file, " -> [0x%04X] ", i);
-        } else {
-            fprintf(file, "    [0x%04X] ", i);
-        }
-
-        command_code cmd = (command_code) byteCode[i];
-        const char* cmd_name = print_command_name(cmd);
-        i += 2;
-
-        fprintf(file, "%-10s (code: 0x%02X)", cmd_name, cmd);
-
-        elem_t arg = 0;
-        const char* argTxt = {};
-        switch(opType){
-            case NO_ARG:
-                break;
-            case PUSH_DEC_ARG:
-            case J_POINT_ARG:
-            case PUSH_REG_ARG:
-                memcpy(&arg, &byteCode[i], sizeof(elem_t));
-                i += sizeof(elem_t);
-                if(opType == PUSH_DEC_ARG || opType == J_POINT_ARG){
-                    fprintf(file, " arg = %d", arg);
-                } else {
-                    argTxt = get_arg_name((argumentCode) arg);
-                    fprintf(file, " arg = %s", argTxt);
-                }
-                break;
-        }
-        fprintf(file, "\n");
-    }
-
-    fprintf(file, "============================================\n");
-}
-
-#ifdef DEBUG
-void spu_dump(spu_t* spu, size_t command_ip, command_code opCode, command_type opType, FILE* file, off_t byte_code_size){
-    fprintf(file, "\n");
-    fprintf(file, "Command = %s, Type = %s\n", print_command_name(opCode), print_command_type(opType));
-
-    print_byteCode(spu->byteCode, command_ip, file, byte_code_size, opType);
-
-    fprintf(file, "AX = %d\nBX = %d\nCX = %d\n\n", spu->AX, spu->BX, spu->CX);
-
-    print_stack(spu->stk, file);
-
-    fprintf(file, LINE);
-}
-#else
-void spu_dump(spu_t* spu, size_t command_ip, command_code opCode, command_type opType, FILE* file, off_t byte_code_size);
-#endif
-
-int main(){
+int main() {
     const int byte_code_fd = get_file_dp("byte_code.bin");
-    off_t     byte_code_size = get_file_size(byte_code_fd);
+    off_t byte_code_size = get_file_size(byte_code_fd);
 
     FILE* input = fopen("input.txt", "r");
     assert(input);
 
-    #ifdef DEBUG
-    FILE* spuDump = fopen("spu_dump.txt", "w");
+    FILE* spuDump = 0;
+#ifdef DEBUG
+    spuDump = fopen("spu_dump.txt", "w");
     assert(spuDump);
-    #endif
+#endif
 
-    spu_t spu = {.AX = 0, .BX = 0, .CX = 0};
+    spu_t spu = { .AX = 0, .BX = 0, .CX = 0 };
 
-    spu.byteCode = (uint8_t*) calloc(byte_code_size, sizeof(uint8_t));
+    spu.byteCode = (uint8_t*)calloc(byte_code_size, sizeof(uint8_t));
     read(byte_code_fd, spu.byteCode, byte_code_size);
 
     spu.stk = STACK_INIT(10, "stack");
+    spu.call_stack = STACK_INIT(10, "call stack");
     spu.cIp = 0;
 
-    while(spu.cIp < byte_code_size){
+    while (spu.cIp < byte_code_size) {
         size_t command_ip = spu.cIp;
-        command_code opCode = (command_code) spu.byteCode[spu.cIp++];
-        command_type opType = NO_ARG;
-        // char comandName[32] = {};
-        // do {
-        //     fgets(comandName, 31, input);
-        //     if(comandName[0] == ':')
-        //         fprintf(stderr, "flag = %s\n", comandName);
-        // } while(comandName[0] == ':');
+        command_code opCode = (command_code)(spu.byteCode[spu.cIp] & 31);
+        uint8_t opType = spu.byteCode[spu.cIp++] & (7 << 5);
 
+        switch (opCode) { // TODO сделать бинпоиск по структуре из кода команды и указателя на функцию.
+        case PUSH_CODE: {
+            push(&spu, opType);
 
-        switch(opCode){ // TODO сделать бинпоиск по структуре из кода команды и указателя на функцию.
-            case PUSH_CODE:{
-                opType = (command_type) spu.byteCode[spu.cIp++];
-                push(&spu, opType);
-                break;
-            }
-            case POP_CODE:{
-                opType = (command_type) spu.byteCode[spu.cIp++];
-                pop(&spu, opType);
-                break;
-            }
-            case OUT_CODE:
-                out_value(spu.stk);
-                break;
-            case HLT_CODE:
-                return 0;
-            case ADD_CODE:
-                addition(spu.stk);
-                break;
-            case SUB_CODE:
-                subtraction(spu.stk);
-                break;
-            case MUL_CODE:
-                multiply(spu.stk);
-                break;
-            case DIV_CODE:
-                division(spu.stk);
-                break;
-            case SQRT_CODE:
-                get_sqrt(spu.stk);
-                break;
-            case JMP_CODE:{
-                elem_t target = get_jmp_arg(&spu, &opType);
+            break;
+        }
+        case POP_CODE: {
+            pop(&spu, opType);
+
+            break;
+        }
+        case OUT_CODE:
+            out_value(spu.stk);
+
+            break;
+        case HLT_CODE:
+            close(byte_code_fd);
+            fclose(input);
+            if (spuDump)
+                fclose(spuDump);
+            free(spu.byteCode);
+            return 0;
+        case ADD_CODE:
+            addition(spu.stk);
+
+            break;
+        case SUB_CODE:
+            subtraction(spu.stk);
+
+            break;
+        case MUL_CODE:
+            multiply(spu.stk);
+
+            break;
+        case DIV_CODE:
+            division(spu.stk);
+
+            break;
+        case SQRT_CODE:
+            get_sqrt(spu.stk);
+
+            break;
+        case IN_CODE:
+            do_in(&spu, opType);
+
+            break;
+        case CALL_CODE:
+            do_call(&spu);
+
+            break;
+        case RET_CODE:
+            do_ret(&spu);
+
+            break;
+        case DISC_CODE:
+            calc_disc(&spu);
+
+            break;
+        case JMP_CODE: {
+            elem_t target = get_jmp_arg(&spu);
+            spu.cIp = target;
+
+            break;
+        }
+        case JA_CODE:
+        case JB_CODE:
+        case JE_CODE:
+        case JAE_CODE:
+        case JBE_CODE:
+        case JNE_CODE: {
+            elem_t target = get_jmp_arg(&spu);
+
+            elem_t A = 0, B = 0;
+            pop_stack(spu.stk, &B);
+            pop_stack(spu.stk, &A);
+
+            bool condition = get_condition(opCode, A, B);
+
+            if (condition) {
                 spu.cIp = target;
-                break;
             }
-            case JA_CODE:
-            case JB_CODE:
-            case JE_CODE:
-            case JAE_CODE:
-            case JBE_CODE:
-            case JNE_CODE:{
-                elem_t target = get_jmp_arg(&spu, &opType);
-
-                elem_t A = 0, B = 0;
-                pop_stack(spu.stk, &A);
-                pop_stack(spu.stk, &B);
-                bool condition = false;
-                switch(opCode){
-                    case JA_CODE: condition = (A > B); break;
-                    case JB_CODE: condition = (A < B); break;
-                    case JE_CODE: condition = (A == B); break;
-                    case JAE_CODE: condition = (A >= B); break;
-                    case JBE_CODE: condition = (A <= B); break;
-                    case JNE_CODE: condition = (A != B); break;
-                    default: break;
-                }
-
-                if(condition){
-                    spu.cIp = target;
-                }
-                break;
-            }
-            default: break;
+            break;
+        }
+        default:
+            break;
         }
 
         spu_dump(&spu, command_ip, opCode, opType, spuDump, byte_code_size);
     }
 
     free(spu.byteCode);
+}
+
+int get_file_dp(char* name) {
+    int fd = open(name, O_RDONLY);
+    assert(fd != ERROR_VALUE && "Error file descriptor");
+
+    return fd;
+}
+
+off_t get_file_size(int fd) {
+    struct stat fileInfo = { };
+    assert(fstat(fd, &fileInfo) != ERROR_VALUE && "Error fstat");
+
+    return fileInfo.st_size;
+}
+
+void print_stack(stack_t* stk, FILE* file) {
+    for (size_t i = 0; i < stk->size; i++) {
+        fprintf(file, "  *[%3zu] - ", i);
+        fprintf(file, "%lg, [0x%04zX] \n", (float)stk->data[i] / accuracy, stk->data[i]);
+    }
+}
+
+const char* print_command_name(command_code opCode) {
+    size_t com_len = sizeof(commands) / sizeof(processorOP);
+
+    for (size_t i = 0; i < com_len; i++) {
+        if (commands[i].opCode == opCode) {
+            return commands[i].name;
+        }
+    }
+
+    return " ";
+}
+const char* print_command_type(uint8_t opType) {
+    // Теперь функция распознает битовые маски, а не старый enum
+    if (opType == 0)
+        return "NO_ARG";
+    if (opType == (1 << 5))
+        return "DEC_ARG";
+    if (opType == (1 << 6))
+        return "REG_ARG";
+    if (opType == ((1 << 7) | (1 << 5)))
+        return "RAM_DEC_ARG";
+    if (opType == ((1 << 7) | (1 << 6)))
+        return "RAM_REG_ARG";
+    if (opType == ((1 << 7) | (1 << 6) | (1 << 5)))
+        return "RAM_REG_DEC_ARG";
+    return "ERROR";
+}
+
+const char* get_arg_name(registerCode argCode) {
+    for (size_t i = 0; i < REG_CNT; i++) {
+        if (argView[i].argCode == argCode) {
+            return argView[i].name;
+        }
+    }
+
+    return "ERROR";
+}
+
+void print_byteCode(uint8_t* byteCode, size_t cIp, FILE* file, off_t byte_code_size) {
+    fprintf(file, "=== BYTECODE DUMP (cIp: 0x%04zX / %zu) ===\n", cIp, cIp);
+
+    size_t i = 0;
+    while (i < (size_t)byte_code_size) {
+        if (cIp == i) {
+            fprintf(file, " -> [0x%04zX] ", i);
+        } else {
+            fprintf(file, "    [0x%04zX] ", i);
+        }
+
+        uint8_t current_byte = byteCode[i];
+        command_code cmd = (command_code)(current_byte & 31);
+        uint8_t opType = current_byte & (7 << 5);
+
+        i++;
+
+        fprintf(file, "%-6s (0x%02X)", print_command_name(cmd), current_byte);
+
+        elem_t dec_val = 0;
+        elem_t reg_val = 0;
+
+        bool has_dec = opType & (1 << 5);
+        bool has_reg = opType & (1 << 6);
+        bool has_ram = opType & (1 << 7);
+
+        if (has_dec) {
+            memcpy(&dec_val, &byteCode[i], sizeof(elem_t));
+            i += sizeof(elem_t);
+        }
+        if (has_reg) {
+            memcpy(&reg_val, &byteCode[i], sizeof(elem_t));
+            i += sizeof(elem_t);
+        }
+
+        if (has_dec || has_reg || has_ram) {
+            fprintf(file, " arg = ");
+            if (has_ram)
+                fprintf(file, "[ ");
+
+            if (has_reg) {
+                fprintf(file, "%s", get_arg_name((registerCode)reg_val));
+                if (has_dec)
+                    fprintf(file, " + ");
+            }
+            if (has_dec) {
+                fprintf(file, "%d", dec_val);
+            }
+
+            if (has_ram)
+                fprintf(file, " ]");
+        }
+
+        fprintf(file, "\n");
+    }
+
+    fprintf(file, "============================================\n");
+}
+
+void dump_register(FILE* file, spu_t* spu) {
+    for (size_t i = 0; i < REG_CNT; i++) {
+        fprintf(file, "%s = %d\n", argView[i].name, spu->reg[i] / accuracy);
+    }
+    fprintf(file, "\n");
+}
+
+#ifdef DEBUG
+void spu_dump(spu_t* spu, size_t command_ip, command_code opCode, uint8_t opType, FILE* file, off_t byte_code_size) {
+    if (!file)
+        return;
+
+    fprintf(file, "\n");
+    fprintf(file, "Command = %s, Type = %s\n", print_command_name(opCode), print_command_type(opType));
+
+    print_byteCode(spu->byteCode, command_ip, file, byte_code_size);
+
+    dump_register(file, spu);
+
+    fprintf(file, "---STACK ---\n");
+    print_stack(spu->stk, file);
+
+    fprintf(file, "---STACK ---\n");
+    print_stack(spu->call_stack, file);
+
+    fprintf(file, LINE);
+}
+#else
+inline void spu_dump(spu_t* spu, size_t command_ip, command_code opCode, uint8_t opType, FILE* file, off_t byte_code_size) {
+}
+#endif
+
+bool get_condition(command_code opCode, elem_t A, elem_t B) {
+    bool condition = false;
+    switch (opCode) {
+    case JA_CODE:
+        condition = (A > B);
+        break;
+    case JB_CODE:
+        condition = (A < B);
+        break;
+    case JE_CODE:
+        condition = (A == B);
+        break;
+    case JAE_CODE:
+        condition = (A >= B);
+        break;
+    case JBE_CODE:
+        condition = (A <= B);
+        break;
+    case JNE_CODE:
+        condition = (A != B);
+        break;
+    default:
+        break;
+    }
+
+    return condition;
 }

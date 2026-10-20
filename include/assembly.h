@@ -1,29 +1,29 @@
 #pragma once
 
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stddef.h>
 #include <assert.h>
-#include <stdlib.h>
 #include <ctype.h>
-#include <sys/types.h>
+#include <fcntl.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <stdint.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "config.h"
 
 #define ERROR_VALUE -1
-#define BUFFER_SIZE 10
-#define SPEC_BUFFER_SIZE "9"
+#define BUFFER_SIZE 64
+#define SPEC_BUFFER_SIZE "63"
 
-typedef struct{
+typedef struct {
     const char* name;
     size_t ip;
 } label;
 
-typedef enum{
+typedef enum {
     NOT_A_CODE = 0,
     PUSH_CODE = 1,
     POP_CODE = 2,
@@ -41,59 +41,89 @@ typedef enum{
     JAE_CODE = 14,
     JBE_CODE = 15,
     JNE_CODE = 16,
-    LABEL_CODE = 17
+    LABEL_CODE = 17,
+    IN_CODE = 18,
+    CALL_CODE = 19,
+    RET_CODE = 20,
+    DISC_CODE = 21,
 } command_code;
 
-typedef enum{
-    NO_ARG = 0,
-    PUSH_DEC_ARG = 51,
-    PUSH_REG_ARG = 52,
-    POP_REG_ARG = 53,
-    J_POINT_ARG = 54,
+typedef enum {
+    NO_ARG,
+    DEC_ARG,
+    REG_ARG,
+    RAM_DEC_ARG,
+    RAM_REG_ARG,
+    RAM_REG_DEC_ARG,
 } command_type;
 
-typedef struct{
+typedef struct {
     const char* name;
     command_code opCode;
 } processorOP;
 
 const processorOP commands[] = {
-    {"PUSH", PUSH_CODE},
-    {"POP", POP_CODE},
-    {"OUT", OUT_CODE},
-    {"HLT", HLT_CODE},
+    { "PUSH", PUSH_CODE },
+    { "POP", POP_CODE },
+    { "OUT", OUT_CODE },
+    { "HLT", HLT_CODE },
 
-    {"ADD", ADD_CODE},
-    {"SUB", SUB_CODE},
-    {"MUL", MUL_CODE},
-    {"DIV", DIV_CODE},
-    {"SQRT", SQRT_CODE},
+    { "ADD", ADD_CODE },
+    { "SUB", SUB_CODE },
+    { "MUL", MUL_CODE },
+    { "DIV", DIV_CODE },
+    { "SQRT", SQRT_CODE },
 
-    {"JMP", JMP_CODE},
-    {"JA",  JA_CODE},
-    {"JB",  JB_CODE},
-    {"JE",  JE_CODE},
-    {"JAE", JAE_CODE},
-    {"JBE", JBE_CODE},
-    {"JNE", JNE_CODE}
+    { "JMP", JMP_CODE },
+    { "JA", JA_CODE },
+    { "JB", JB_CODE },
+    { "JE", JE_CODE },
+    { "JAE", JAE_CODE },
+    { "JBE", JBE_CODE },
+    { "JNE", JNE_CODE },
+
+    { "IN", IN_CODE },
+    { "RET", RET_CODE },
+    { "CALL", CALL_CODE },
+    { "DISC", DISC_CODE }
 };
 
-typedef enum{
+typedef enum {
     AX_CODE = 101,
     BX_CODE = 102,
-    CX_CODE = 103
-} argumentCode;
+    CX_CODE = 103,
+    JF_CODE = 104,
+} registerCode;
 
-typedef struct{
+typedef struct {
     const char* name;
-    argumentCode argCode;
+    registerCode argCode;
 } argOp;
 
 const argOp argView[] = {
-    {"AX", AX_CODE},
-    {"BX", BX_CODE},
-    {"CX", CX_CODE},
+    { "AX", AX_CODE },
+    { "BX", BX_CODE },
+    { "CX", CX_CODE },
+    { "JF", JF_CODE }
 };
+
+const size_t REG_CNT = sizeof(argView) / sizeof(argOp);
+
+typedef struct {
+    FILE* input; // Файл для чтения
+    uint8_t* byteCode; // Выходной массив байткода
+    size_t currentByte; // Текущая позиция в массиве байткода
+    label* labelTable; // Таблица меток
+    size_t currentNumber; // Текущее количество меток
+    int pass; // Номер прохода (1 или 2)
+} AsmContext;
+
+typedef struct {
+    command_code opCode;
+    command_type opType;
+    elem_t argValue1;
+    elem_t argValue2;
+} Instruction;
 
 bool check_line(FILE* input);
 void get_text_arg(elem_t* argValue, size_t argCnt, FILE* input);
@@ -101,6 +131,6 @@ void get_text_arg(elem_t* argValue, size_t argCnt, FILE* input);
 off_t get_file_size(FILE* file);
 void write_to_file(uint8_t* byteCode, size_t currentByte);
 
-void assembly(FILE* input, uint8_t* byteCode, label* labelTable, size_t* currentByte, size_t* currentNumber, const int number);
+void assembly(AsmContext* ctx);
 
 bool is_jump_command(command_code opCode);

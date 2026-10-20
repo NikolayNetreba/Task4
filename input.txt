@@ -1,6 +1,7 @@
-PUSH 10
-JMP :for
-PUSH 5
+IN AX
+IN BX
+ADD CX
+PUSH CX
 OUT
-:for
-OUT
+HLT
+

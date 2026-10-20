@@ -1,0 +1,100 @@
+IN AX
+IN BX
+IN CX
+CALL :isAZero
+PUSH AX
+PUSH BX
+PUSH CX
+DISC
+
+POP JF
+PUSH JF
+PUSH 0
+JB :D<0
+PUSH JF
+
+SQRT
+POP JF
+
+PUSH JF
+PUSH 0
+JE :D=0
+
+PUSH JF
+PUSH 0
+JA :D>0
+HLT
+
+:D>0
+CALL :calcX1
+CALL :calcX2
+HLT
+
+:D<0
+PUSH -6769
+OUT
+HLT
+
+:D=0
+CALL :calcX1
+HLT
+
+:calcX1
+PUSH JF
+SQRT
+PUSH BX
+PUSH -1
+MUL
+ADD
+PUSH AX
+PUSH 2
+MUL
+DIV
+OUT
+RET
+
+:calcX2
+PUSH BX
+PUSH -1
+MUL
+PUSH JF
+SQRT
+SUB
+PUSH AX
+PUSH 2
+MUL
+DIV
+OUT
+RET
+
+:isAZero
+PUSH AX
+PUSH 0
+JE :isBZero #if a == 0
+RET
+
+:isBZero
+PUSH BX
+PUSH 0
+JE :isCZero #if a == 0 b == 0
+PUSH CX #else if a == 0 b != 0
+PUSH -1
+MUL
+PUSH BX
+DIV
+OUT
+HLT
+
+:isCZero
+PUSH CX
+PUSH 0
+JE :CZero #if c == 0
+PUSH -6769 #else if c != 0
+OUT
+HLT
+
+:CZero #if a == 0 b == 0 c == 0
+PUSH 6769
+OUT
+HLT
+
