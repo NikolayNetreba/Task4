@@ -2,13 +2,30 @@
 Command = IN, Type = REG_ARG
 === BYTECODE DUMP (cIp: 0x0000 / 0) ===
  -> [0x0000] IN     (0x52) arg = AX
-    [0x0005] IN     (0x52) arg = BX
-    [0x000A] ADD    (0x45) arg = CX
-    [0x000F] PUSH   (0x41) arg = CX
-    [0x0014] OUT    (0x03)
-    [0x0015] HLT    (0x04)
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
 ============================================
-AX = 5
+AX = 6
 BX = 0
 CX = 0
 JF = 0
@@ -17,35 +34,70 @@ JF = 0
 ---STACK ---
 --------------------------------------------------
 
-Command = IN, Type = REG_ARG
+Command = PUSH, Type = DEC_ARG
 === BYTECODE DUMP (cIp: 0x0005 / 5) ===
     [0x0000] IN     (0x52) arg = AX
- -> [0x0005] IN     (0x52) arg = BX
-    [0x000A] ADD    (0x45) arg = CX
-    [0x000F] PUSH   (0x41) arg = CX
-    [0x0014] OUT    (0x03)
-    [0x0015] HLT    (0x04)
+ -> [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
 ============================================
-AX = 5
-BX = 10
+AX = 6
+BX = 0
 CX = 0
 JF = 0
 
 ---STACK ---
+  *[  0] - 1, [0x0001] 
 ---STACK ---
 --------------------------------------------------
 
-Command = ADD, Type = REG_ARG
+Command = POP, Type = REG_ARG
 === BYTECODE DUMP (cIp: 0x000A / 10) ===
     [0x0000] IN     (0x52) arg = AX
-    [0x0005] IN     (0x52) arg = BX
- -> [0x000A] ADD    (0x45) arg = CX
-    [0x000F] PUSH   (0x41) arg = CX
-    [0x0014] OUT    (0x03)
-    [0x0015] HLT    (0x04)
+    [0x0005] PUSH   (0x21) arg = 1
+ -> [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
 ============================================
-AX = 5
-BX = 10
+AX = 6
+BX = 1
 CX = 0
 JF = 0
 
@@ -53,111 +105,2930 @@ JF = 0
 ---STACK ---
 --------------------------------------------------
 
-Command = MUL, Type = ERROR
-=== BYTECODE DUMP (cIp: 0x000B / 11) ===
+Command = PUSH, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x000F / 15) ===
     [0x0000] IN     (0x52) arg = AX
-    [0x0005] IN     (0x52) arg = BX
-    [0x000A] ADD    (0x45) arg = CX
-    [0x000F] PUSH   (0x41) arg = CX
-    [0x0014] OUT    (0x03)
-    [0x0015] HLT    (0x04)
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+ -> [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
 ============================================
-AX = 5
-BX = 10
+AX = 6
+BX = 1
 CX = 0
+JF = 0
+
+---STACK ---
+  *[  0] - 1, [0x0001] 
+---STACK ---
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0014 / 20) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+ -> [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 1
 JF = 0
 
 ---STACK ---
 ---STACK ---
 --------------------------------------------------
 
-Command =  , Type = NO_ARG
-=== BYTECODE DUMP (cIp: 0x000C / 12) ===
+Command = CALL, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0019 / 25) ===
     [0x0000] IN     (0x52) arg = AX
-    [0x0005] IN     (0x52) arg = BX
-    [0x000A] ADD    (0x45) arg = CX
-    [0x000F] PUSH   (0x41) arg = CX
-    [0x0014] OUT    (0x03)
-    [0x0015] HLT    (0x04)
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+ -> [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
 ============================================
-AX = 5
-BX = 10
-CX = 0
+AX = 6
+BX = 1
+CX = 1
 JF = 0
 
 ---STACK ---
 ---STACK ---
+  *[  0] - 30, [0x001E] 
 --------------------------------------------------
 
-Command =  , Type = NO_ARG
-=== BYTECODE DUMP (cIp: 0x000D / 13) ===
+Command = CALL, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0025 / 37) ===
     [0x0000] IN     (0x52) arg = AX
-    [0x0005] IN     (0x52) arg = BX
-    [0x000A] ADD    (0x45) arg = CX
-    [0x000F] PUSH   (0x41) arg = CX
-    [0x0014] OUT    (0x03)
-    [0x0015] HLT    (0x04)
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+ -> [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
 ============================================
-AX = 5
-BX = 10
-CX = 0
+AX = 6
+BX = 1
+CX = 1
 JF = 0
 
 ---STACK ---
 ---STACK ---
---------------------------------------------------
-
-Command =  , Type = NO_ARG
-=== BYTECODE DUMP (cIp: 0x000E / 14) ===
-    [0x0000] IN     (0x52) arg = AX
-    [0x0005] IN     (0x52) arg = BX
-    [0x000A] ADD    (0x45) arg = CX
-    [0x000F] PUSH   (0x41) arg = CX
-    [0x0014] OUT    (0x03)
-    [0x0015] HLT    (0x04)
-============================================
-AX = 5
-BX = 10
-CX = 0
-JF = 0
-
----STACK ---
----STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
 --------------------------------------------------
 
 Command = PUSH, Type = REG_ARG
-=== BYTECODE DUMP (cIp: 0x000F / 15) ===
+=== BYTECODE DUMP (cIp: 0x004F / 79) ===
     [0x0000] IN     (0x52) arg = AX
-    [0x0005] IN     (0x52) arg = BX
-    [0x000A] ADD    (0x45) arg = CX
- -> [0x000F] PUSH   (0x41) arg = CX
-    [0x0014] OUT    (0x03)
-    [0x0015] HLT    (0x04)
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+ -> [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
 ============================================
-AX = 5
-BX = 10
-CX = 0
+AX = 6
+BX = 1
+CX = 1
 JF = 0
 
 ---STACK ---
-  *[  0] - 0, [0x0000] 
+  *[  0] - 6, [0x0006] 
 ---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0054 / 84) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+ -> [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 1
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+  *[  1] - 1, [0x0001] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = JE, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0059 / 89) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+ -> [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 1
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = RET, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x005E / 94) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+ -> [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 1
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x002A / 42) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+ -> [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 1
+JF = 0
+
+---STACK ---
+  *[  0] - 1, [0x0001] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x002F / 47) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+ -> [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 1
+JF = 0
+
+---STACK ---
+  *[  0] - 1, [0x0001] 
+  *[  1] - 1, [0x0001] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = ADD, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0034 / 52) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+ -> [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 1
+JF = 0
+
+---STACK ---
+  *[  0] - 2, [0x0002] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0035 / 53) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+ -> [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 2
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x003A / 58) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+ -> [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 2
+JF = 0
+
+---STACK ---
+  *[  0] - 2, [0x0002] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x003F / 63) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+ -> [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 2
+JF = 0
+
+---STACK ---
+  *[  0] - 2, [0x0002] 
+  *[  1] - 1, [0x0001] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = MUL, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0044 / 68) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+ -> [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 1
+CX = 2
+JF = 0
+
+---STACK ---
+  *[  0] - 2, [0x0002] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0045 / 69) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+ -> [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 2
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = JMP, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x004A / 74) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+ -> [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 2
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = CALL, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0025 / 37) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+ -> [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 2
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x004F / 79) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+ -> [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 2
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0054 / 84) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+ -> [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 2
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+  *[  1] - 2, [0x0002] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = JE, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0059 / 89) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+ -> [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 2
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = RET, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x005E / 94) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+ -> [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 2
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x002A / 42) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+ -> [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 2
+JF = 0
+
+---STACK ---
+  *[  0] - 2, [0x0002] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x002F / 47) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+ -> [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 2
+JF = 0
+
+---STACK ---
+  *[  0] - 2, [0x0002] 
+  *[  1] - 1, [0x0001] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = ADD, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0034 / 52) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+ -> [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 2
+JF = 0
+
+---STACK ---
+  *[  0] - 3, [0x0003] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0035 / 53) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+ -> [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 3
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x003A / 58) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+ -> [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 3
+JF = 0
+
+---STACK ---
+  *[  0] - 3, [0x0003] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x003F / 63) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+ -> [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 3
+JF = 0
+
+---STACK ---
+  *[  0] - 3, [0x0003] 
+  *[  1] - 2, [0x0002] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = MUL, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0044 / 68) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+ -> [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 2
+CX = 3
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0045 / 69) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+ -> [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 3
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = JMP, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x004A / 74) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+ -> [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 3
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = CALL, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0025 / 37) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+ -> [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 3
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x004F / 79) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+ -> [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 3
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0054 / 84) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+ -> [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 3
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+  *[  1] - 3, [0x0003] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = JE, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0059 / 89) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+ -> [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 3
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = RET, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x005E / 94) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+ -> [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 3
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x002A / 42) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+ -> [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 3
+JF = 0
+
+---STACK ---
+  *[  0] - 3, [0x0003] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x002F / 47) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+ -> [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 3
+JF = 0
+
+---STACK ---
+  *[  0] - 3, [0x0003] 
+  *[  1] - 1, [0x0001] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = ADD, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0034 / 52) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+ -> [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 3
+JF = 0
+
+---STACK ---
+  *[  0] - 4, [0x0004] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0035 / 53) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+ -> [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 4
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x003A / 58) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+ -> [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 4
+JF = 0
+
+---STACK ---
+  *[  0] - 4, [0x0004] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x003F / 63) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+ -> [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 4
+JF = 0
+
+---STACK ---
+  *[  0] - 4, [0x0004] 
+  *[  1] - 6, [0x0006] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = MUL, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0044 / 68) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+ -> [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 6
+CX = 4
+JF = 0
+
+---STACK ---
+  *[  0] - 24, [0x0018] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0045 / 69) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+ -> [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 4
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = JMP, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x004A / 74) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+ -> [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 4
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = CALL, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0025 / 37) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+ -> [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 4
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x004F / 79) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+ -> [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 4
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0054 / 84) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+ -> [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 4
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+  *[  1] - 4, [0x0004] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = JE, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0059 / 89) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+ -> [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 4
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = RET, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x005E / 94) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+ -> [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 4
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x002A / 42) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+ -> [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 4
+JF = 0
+
+---STACK ---
+  *[  0] - 4, [0x0004] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x002F / 47) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+ -> [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 4
+JF = 0
+
+---STACK ---
+  *[  0] - 4, [0x0004] 
+  *[  1] - 1, [0x0001] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = ADD, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0034 / 52) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+ -> [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 4
+JF = 0
+
+---STACK ---
+  *[  0] - 5, [0x0005] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0035 / 53) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+ -> [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 5
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x003A / 58) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+ -> [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 5
+JF = 0
+
+---STACK ---
+  *[  0] - 5, [0x0005] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x003F / 63) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+ -> [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 5
+JF = 0
+
+---STACK ---
+  *[  0] - 5, [0x0005] 
+  *[  1] - 24, [0x0018] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = MUL, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0044 / 68) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+ -> [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 24
+CX = 5
+JF = 0
+
+---STACK ---
+  *[  0] - 120, [0x0078] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0045 / 69) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+ -> [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 5
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = JMP, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x004A / 74) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+ -> [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 5
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = CALL, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0025 / 37) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+ -> [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 5
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x004F / 79) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+ -> [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 5
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0054 / 84) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+ -> [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 5
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+  *[  1] - 5, [0x0005] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = JE, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0059 / 89) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+ -> [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 5
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = RET, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x005E / 94) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+ -> [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 5
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x002A / 42) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+ -> [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 5
+JF = 0
+
+---STACK ---
+  *[  0] - 5, [0x0005] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x002F / 47) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+ -> [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 5
+JF = 0
+
+---STACK ---
+  *[  0] - 5, [0x0005] 
+  *[  1] - 1, [0x0001] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = ADD, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0034 / 52) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+ -> [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 5
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0035 / 53) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+ -> [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 6
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x003A / 58) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+ -> [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 6
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x003F / 63) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+ -> [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 6
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+  *[  1] - 120, [0x0078] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = MUL, Type = NO_ARG
+=== BYTECODE DUMP (cIp: 0x0044 / 68) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+ -> [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 120
+CX = 6
+JF = 0
+
+---STACK ---
+  *[  0] - 720, [0x02D0] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = POP, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0045 / 69) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+ -> [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 720
+CX = 6
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = JMP, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x004A / 74) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+ -> [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 720
+CX = 6
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+--------------------------------------------------
+
+Command = CALL, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0025 / 37) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+ -> [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 720
+CX = 6
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x004F / 79) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+ -> [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 720
+CX = 6
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x0054 / 84) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+ -> [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 720
+CX = 6
+JF = 0
+
+---STACK ---
+  *[  0] - 6, [0x0006] 
+  *[  1] - 6, [0x0006] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = JE, Type = DEC_ARG
+=== BYTECODE DUMP (cIp: 0x0059 / 89) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+ -> [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 720
+CX = 6
+JF = 0
+
+---STACK ---
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
+--------------------------------------------------
+
+Command = PUSH, Type = REG_ARG
+=== BYTECODE DUMP (cIp: 0x001E / 30) ===
+    [0x0000] IN     (0x52) arg = AX
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+ -> [0x001E] PUSH   (0x41) arg = BX
+    [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
+============================================
+AX = 6
+BX = 720
+CX = 6
+JF = 0
+
+---STACK ---
+  *[  0] - 720, [0x02D0] 
+---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
 --------------------------------------------------
 
 Command = OUT, Type = NO_ARG
-=== BYTECODE DUMP (cIp: 0x0014 / 20) ===
+=== BYTECODE DUMP (cIp: 0x0023 / 35) ===
     [0x0000] IN     (0x52) arg = AX
-    [0x0005] IN     (0x52) arg = BX
-    [0x000A] ADD    (0x45) arg = CX
-    [0x000F] PUSH   (0x41) arg = CX
- -> [0x0014] OUT    (0x03)
-    [0x0015] HLT    (0x04)
+    [0x0005] PUSH   (0x21) arg = 1
+    [0x000A] POP    (0x42) arg = BX
+    [0x000F] PUSH   (0x21) arg = 1
+    [0x0014] POP    (0x42) arg = CX
+    [0x0019] CALL   (0x33) arg = [0x0025]
+    [0x001E] PUSH   (0x41) arg = BX
+ -> [0x0023] OUT    (0x03)
+    [0x0024] HLT    (0x04)
+    [0x0025] CALL   (0x33) arg = [0x004F]
+    [0x002A] PUSH   (0x41) arg = CX
+    [0x002F] PUSH   (0x21) arg = 1
+    [0x0034] ADD    (0x05)
+    [0x0035] POP    (0x42) arg = CX
+    [0x003A] PUSH   (0x41) arg = CX
+    [0x003F] PUSH   (0x41) arg = BX
+    [0x0044] MUL    (0x07)
+    [0x0045] POP    (0x42) arg = BX
+    [0x004A] JMP    (0x2A) arg = [0x0025]
+    [0x004F] PUSH   (0x41) arg = AX
+    [0x0054] PUSH   (0x41) arg = CX
+    [0x0059] JE     (0x2D) arg = [0x001E]
+    [0x005E] RET    (0x14)
 ============================================
-AX = 5
-BX = 10
-CX = 0
+AX = 6
+BX = 720
+CX = 6
 JF = 0
 
 ---STACK ---
 ---STACK ---
+  *[  0] - 30, [0x001E] 
+  *[  1] - 42, [0x002A] 
 --------------------------------------------------

@@ -1,13 +1,10 @@
 #include "spu.h"
-#include "calc.h"
 #include "colors.h"
+#include "commands.h"
 
 int main() {
     const int byte_code_fd = get_file_dp("byte_code.bin");
     off_t byte_code_size = get_file_size(byte_code_fd);
-
-    FILE* input = fopen("input.txt", "r");
-    assert(input);
 
     FILE* spuDump = 0;
 #ifdef DEBUG
@@ -25,7 +22,7 @@ int main() {
     spu.cIp = 0;
 
     while (spu.cIp < byte_code_size) {
-        size_t command_ip = spu.cIp;
+        size_t command_ip = spu.cIp; // for dump
         command_code opCode = (command_code)(spu.byteCode[spu.cIp] & 31);
         uint8_t opType = spu.byteCode[spu.cIp++] & (7 << 5);
 
@@ -46,7 +43,6 @@ int main() {
             break;
         case HLT_CODE:
             close(byte_code_fd);
-            fclose(input);
             if (spuDump)
                 fclose(spuDump);
             free(spu.byteCode);
@@ -122,6 +118,34 @@ int main() {
     free(spu.byteCode);
 }
 
+bool get_condition(command_code opCode, elem_t A, elem_t B) {
+    bool condition = false;
+    switch (opCode) {
+    case JA_CODE:
+        condition = (A > B);
+        break;
+    case JB_CODE:
+        condition = (A < B);
+        break;
+    case JE_CODE:
+        condition = (A == B);
+        break;
+    case JAE_CODE:
+        condition = (A >= B);
+        break;
+    case JBE_CODE:
+        condition = (A <= B);
+        break;
+    case JNE_CODE:
+        condition = (A != B);
+        break;
+    default:
+        break;
+    }
+
+    return condition;
+}
+
 int get_file_dp(char* name) {
     int fd = open(name, O_RDONLY);
     assert(fd != ERROR_VALUE && "Error file descriptor");
@@ -136,6 +160,8 @@ off_t get_file_size(int fd) {
     return fileInfo.st_size;
 }
 
+//============== DUMP ===========================
+
 void print_stack(stack_t* stk, FILE* file) {
     for (size_t i = 0; i < stk->size; i++) {
         fprintf(file, "  *[%3zu] - ", i);
@@ -143,19 +169,7 @@ void print_stack(stack_t* stk, FILE* file) {
     }
 }
 
-const char* print_command_name(command_code opCode) {
-    size_t com_len = sizeof(commands) / sizeof(processorOP);
-
-    for (size_t i = 0; i < com_len; i++) {
-        if (commands[i].opCode == opCode) {
-            return commands[i].name;
-        }
-    }
-
-    return " ";
-}
 const char* print_command_type(uint8_t opType) {
-    // Теперь функция распознает битовые маски, а не старый enum
     if (opType == 0)
         return "NO_ARG";
     if (opType == (1 << 5))
@@ -181,6 +195,22 @@ const char* get_arg_name(registerCode argCode) {
     return "ERROR";
 }
 
+const char* get_command_name(command_code opCode) {
+    size_t com_len = sizeof(commands) / sizeof(processorOP);
+
+    for (size_t i = 0; i < com_len; i++) {
+        if (commands[i].opCode == opCode) {
+            return commands[i].name;
+        }
+    }
+
+    return " ";
+}
+
+bool is_jump_command(command_code opCode) {
+    return opCode == JA_CODE || opCode == JAE_CODE || opCode == JB_CODE || opCode == JBE_CODE || opCode == JE_CODE || opCode == JNE_CODE || opCode == JMP_CODE;
+}
+
 void print_byteCode(uint8_t* byteCode, size_t cIp, FILE* file, off_t byte_code_size) {
     fprintf(file, "=== BYTECODE DUMP (cIp: 0x%04zX / %zu) ===\n", cIp, cIp);
 
@@ -198,7 +228,7 @@ void print_byteCode(uint8_t* byteCode, size_t cIp, FILE* file, off_t byte_code_s
 
         i++;
 
-        fprintf(file, "%-6s (0x%02X)", print_command_name(cmd), current_byte);
+        fprintf(file, "%-6s (0x%02X)", get_command_name(cmd), current_byte);
 
         elem_t dec_val = 0;
         elem_t reg_val = 0;
@@ -227,7 +257,11 @@ void print_byteCode(uint8_t* byteCode, size_t cIp, FILE* file, off_t byte_code_s
                     fprintf(file, " + ");
             }
             if (has_dec) {
-                fprintf(file, "%d", dec_val);
+                if (cmd == CALL_CODE || is_jump_command(cmd)) {
+                    fprintf(file, "[0x%04zX]", dec_val);
+                } else {
+                    fprintf(file, "%d", dec_val);
+                }
             }
 
             if (has_ram)
@@ -253,7 +287,7 @@ void spu_dump(spu_t* spu, size_t command_ip, command_code opCode, uint8_t opType
         return;
 
     fprintf(file, "\n");
-    fprintf(file, "Command = %s, Type = %s\n", print_command_name(opCode), print_command_type(opType));
+    fprintf(file, "Command = %s, Type = %s\n", get_command_name(opCode), print_command_type(opType));
 
     print_byteCode(spu->byteCode, command_ip, file, byte_code_size);
 
@@ -271,31 +305,3 @@ void spu_dump(spu_t* spu, size_t command_ip, command_code opCode, uint8_t opType
 inline void spu_dump(spu_t* spu, size_t command_ip, command_code opCode, uint8_t opType, FILE* file, off_t byte_code_size) {
 }
 #endif
-
-bool get_condition(command_code opCode, elem_t A, elem_t B) {
-    bool condition = false;
-    switch (opCode) {
-    case JA_CODE:
-        condition = (A > B);
-        break;
-    case JB_CODE:
-        condition = (A < B);
-        break;
-    case JE_CODE:
-        condition = (A == B);
-        break;
-    case JAE_CODE:
-        condition = (A >= B);
-        break;
-    case JBE_CODE:
-        condition = (A <= B);
-        break;
-    case JNE_CODE:
-        condition = (A != B);
-        break;
-    default:
-        break;
-    }
-
-    return condition;
-}

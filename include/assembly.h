@@ -132,5 +132,3 @@ off_t get_file_size(FILE* file);
 void write_to_file(uint8_t* byteCode, size_t currentByte);
 
 void assembly(AsmContext* ctx);
-
-bool is_jump_command(command_code opCode);

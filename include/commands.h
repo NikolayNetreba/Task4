@@ -4,7 +4,7 @@
 #include "spu.h"
 #include "stack.h"
 
-#define accuracy 1000
+#define accuracy 1
 
 typedef enum {
     CALC_OK,

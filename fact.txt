@@ -1,0 +1,32 @@
+IN AX
+PUSH 1
+POP BX #result
+PUSH 1
+POP CX # cx = i = 1 - start
+CALL :fact
+:ret
+PUSH BX
+OUT
+HLT
+
+:fact
+CALL :AX=CX
+
+PUSH CX #CX += 1
+PUSH 1
+ADD
+POP CX
+
+PUSH CX
+PUSH BX
+MUL
+POP BX
+JMP :fact
+
+:AX=CX
+PUSH AX
+PUSH CX
+JE :ret
+RET
+
+
