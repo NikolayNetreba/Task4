@@ -46,6 +46,7 @@ typedef enum {
     CALL_CODE = 19,
     RET_CODE = 20,
     DISC_CODE = 21,
+    PRAM_CODE = 22,
 } command_code;
 
 typedef enum {
@@ -85,7 +86,9 @@ const processorOP commands[] = {
     { "IN", IN_CODE },
     { "RET", RET_CODE },
     { "CALL", CALL_CODE },
-    { "DISC", DISC_CODE }
+    { "DISC", DISC_CODE },
+
+    { "PRAM", PRAM_CODE }
 };
 
 typedef enum {

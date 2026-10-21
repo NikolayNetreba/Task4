@@ -83,6 +83,10 @@ int main() {
             calc_disc(&spu);
 
             break;
+        case PRAM_CODE:
+            print_ram(&spu);
+
+            break;
         case JMP_CODE: {
             elem_t target = get_jmp_arg(&spu);
             spu.cIp = target;
@@ -293,10 +297,10 @@ void spu_dump(spu_t* spu, size_t command_ip, command_code opCode, uint8_t opType
 
     dump_register(file, spu);
 
-    fprintf(file, "---STACK ---\n");
+    fprintf(file, "--- STACK ---\n");
     print_stack(spu->stk, file);
 
-    fprintf(file, "---STACK ---\n");
+    fprintf(file, "--- CALL STACK ---\n");
     print_stack(spu->call_stack, file);
 
     fprintf(file, LINE);

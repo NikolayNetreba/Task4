@@ -120,11 +120,15 @@ void push(spu_t* spu, uint8_t opType) {
         memcpy(&temp, &spu->byteCode[spu->cIp], sizeof(elem_t));
         spu->cIp += sizeof(elem_t);
 
-        arg += spu->reg[temp - AX_CODE];
+        if (opType & (1 << 7)) {
+            arg += spu->reg[temp - AX_CODE] / accuracy;
+        } else {
+            arg += spu->reg[temp - AX_CODE];
+        }
     }
 
     if (opType & (1 << 7)) { // RAM
-        if (arg < RAM_SIZE)
+        if (arg >= 0 && arg < RAM_SIZE)
             arg = spu->ram[arg];
         else {
             fprintf(stderr, "RAM segmentation fault");
@@ -160,14 +164,14 @@ void pop(spu_t* spu, uint8_t opType) {
         spu->cIp += sizeof(elem_t);
 
         if (opType & (1 << 7)) { // RAM[REG]
-            arg += spu->reg[temp - AX_CODE];
+            arg += spu->reg[temp - AX_CODE] / accuracy;
         } else {
             spu->reg[temp - AX_CODE] = val;
         }
     }
 
     if (opType & (1 << 7)) { // RAM
-        if (arg < RAM_SIZE)
+        if (arg >= 0 && arg < RAM_SIZE)
             spu->ram[arg] = val;
         else {
             fprintf(stderr, "RAM segmentation fault");
@@ -214,14 +218,14 @@ void do_in(spu_t* spu, uint8_t opType) {
         spu->cIp += sizeof(elem_t);
 
         if (opType & (1 << 7)) {
-            arg += spu->reg[temp - AX_CODE];
+            arg += spu->reg[temp - AX_CODE] / accuracy;
         } else {
             spu->reg[temp - AX_CODE] = val;
         }
     }
 
     if (opType & (1 << 7)) { // RAM
-        if (arg < RAM_SIZE)
+        if (arg >= 0 && arg < RAM_SIZE)
             spu->ram[arg] = val;
         else {
             fprintf(stderr, "RAM segmentation fault");
@@ -267,4 +271,15 @@ void calc_disc(spu_t* spu) {
 
     elem_t DD = B * B - 4 * A * C;
     push_stack(spu->stk, DD * accuracy);
+}
+void print_ram(spu_t* spu) {
+    for (int i = 0; i < 100; i++) {
+        if (i % 10 == 0) {
+            printf("\n");
+        }
+        if (spu->ram[i])
+            printf("%c", '#');
+        else
+            printf("%c", ' ');
+    }
 }

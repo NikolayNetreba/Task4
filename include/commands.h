@@ -4,7 +4,7 @@
 #include "spu.h"
 #include "stack.h"
 
-#define accuracy 1
+#define accuracy 100
 
 typedef enum {
     CALC_OK,
@@ -28,3 +28,4 @@ void do_in(spu_t* spu, uint8_t opType);
 void do_call(spu_t* spu);
 void do_ret(spu_t* spu);
 void calc_disc(spu_t* spu);
+void print_ram(spu_t* spu);

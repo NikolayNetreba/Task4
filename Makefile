@@ -6,7 +6,7 @@ all: assembler spu
 assembler: obj/assembly.o
 	$(CXX) $(CXXFLAGS) $^ -o assembler
 
-spu: obj/spu.o obj/stack.o obj/calc.o
+spu: obj/spu.o obj/stack.o obj/commands.o
 	$(CXX) $(CXXFLAGS) $^ -o spu
 
 obj/%.o: src/%.cpp

@@ -1,32 +1,79 @@
-IN AX
-PUSH 1
-POP BX #result
-PUSH 1
-POP CX # cx = i = 1 - start
-CALL :fact
-:ret
+PUSH 0
+POP BX
+
+:LOOP_Y
+PUSH 0
+POP CX
+
+:LOOP_X
 PUSH BX
-OUT
-HLT
+PUSH 10
+MUL
+PUSH CX
+ADD
+POP AX
 
-:fact
-CALL :AX=CX
+# dY = (2*Y - 9)^2
+PUSH BX
+PUSH 2
+MUL
+PUSH 9
+SUB
+PUSH BX
+PUSH 2
+MUL
+PUSH 9
+SUB
+MUL
 
-PUSH CX #CX += 1
+# dX = (2*X - 9)^2
+PUSH CX
+PUSH 2
+MUL
+PUSH 9
+SUB
+PUSH CX
+PUSH 2
+MUL
+PUSH 9
+SUB
+MUL
+
+# R = dY^2 + dX^2
+ADD
+
+PUSH 64
+JBE :DRAW_PIXEL
+PUSH 0
+JMP :STORE
+
+:DRAW_PIXEL
+PUSH 1
+
+:STORE
+POP [AX]
+
+# X: (CX = CX + 1)
+PUSH CX
 PUSH 1
 ADD
 POP CX
 
+# if X < 10, продолжаем цикл по X
 PUSH CX
+PUSH 10
+JB :LOOP_X
+
+# Y: (BX = BX + 1)
 PUSH BX
-MUL
+PUSH 1
+ADD
 POP BX
-JMP :fact
 
-:AX=CX
-PUSH AX
-PUSH CX
-JE :ret
-RET
+# if Y < 10, продолжаем цикл по Y
+PUSH BX
+PUSH 10
+JB :LOOP_Y
 
-
+PRAM
+HLT
