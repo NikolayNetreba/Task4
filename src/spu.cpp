@@ -4,7 +4,12 @@
 
 int main() {
     const int byte_code_fd = get_file_dp("byte_code.bin");
-    off_t byte_code_size = get_file_size(byte_code_fd);
+
+    off_t byte_code_size = 0;
+    if (!validate_header(byte_code_fd, &byte_code_size)) {
+        close(byte_code_fd);
+        return 1;
+    }
 
     FILE* spuDump = 0;
 #ifdef DEBUG
@@ -12,7 +17,7 @@ int main() {
     assert(spuDump);
 #endif
 
-    spu_t spu = { .AX = 0, .BX = 0, .CX = 0 };
+    spu_t spu = { };
 
     spu.byteCode = (uint8_t*)calloc(byte_code_size, sizeof(uint8_t));
     read(byte_code_fd, spu.byteCode, byte_code_size);
@@ -162,6 +167,29 @@ off_t get_file_size(int fd) {
     assert(fstat(fd, &fileInfo) != ERROR_VALUE && "Error fstat");
 
     return fileInfo.st_size;
+}
+
+bool validate_header(int fd, off_t* expected_size) {
+    SPU_Header header = { 0 };
+    ssize_t bytes_read = read(fd, &header, sizeof(SPU_Header));
+
+    if (bytes_read != sizeof(SPU_Header)) {
+        fprintf(stderr, "Error: File is too small or missing header.\n");
+        return false;
+    }
+
+    if (header.signature != SPU_SIGNATURE) {
+        fprintf(stderr, "Error: Invalid signature. Expected 0x%X, got 0x%X\n", SPU_SIGNATURE, header.signature);
+        return false;
+    }
+
+    if (header.version != SPU_VERSION) {
+        fprintf(stderr, "Error: Unsupported version. Expected %d, got %d\n", SPU_VERSION, header.version);
+        return false;
+    }
+
+    *expected_size = header.code_size;
+    return true;
 }
 
 //============== DUMP ===========================

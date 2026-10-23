@@ -20,9 +20,6 @@ typedef struct {
 
     elem_t ram[RAM_SIZE];
     elem_t reg[REG_CNT];
-    elem_t AX;
-    elem_t BX;
-    elem_t CX;
 } spu_t;
 
 int get_file_dp(char* name);
@@ -34,3 +31,4 @@ const char* get_arg_name(registerCode arg);
 void print_byteCode(uint8_t* byteCode, size_t cIp, FILE* file, off_t byte_code_size);
 void spu_dump(spu_t* spu, size_t command_ip, command_code opCode, uint8_t opType, FILE* file, off_t byte_code_size);
 bool get_condition(command_code opCode, elem_t A, elem_t B);
+bool validate_header(int fd, off_t* expected_size);

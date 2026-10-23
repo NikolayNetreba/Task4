@@ -19,7 +19,7 @@ static canary_t* find_right_canary(char* start, size_t capacity) {
 }
 
 //=============DEBUG======================================
-static uint64_t calc_hash(const void* ptr, size_t len, uint64_t startHash) {
+uint64_t calc_hash(const void* ptr, size_t len, uint64_t startHash) {
     const uint8_t* oneByte = (const uint8_t*)ptr;
     uint64_t hash = startHash;
 

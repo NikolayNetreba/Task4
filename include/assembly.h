@@ -13,10 +13,21 @@
 #include <unistd.h>
 
 #include "config.h"
+#include "stack.h"
 
 #define ERROR_VALUE -1
 #define BUFFER_SIZE 64
 #define SPEC_BUFFER_SIZE "63"
+
+#define SPU_SIGNATURE 0x31555053 // "SPU1"
+#define SPU_VERSION 1
+
+typedef struct {
+    uint32_t signature;
+    uint32_t version;
+    size_t code_size;
+    uint64_t hash;
+} SPU_Header;
 
 typedef struct {
     const char* name;

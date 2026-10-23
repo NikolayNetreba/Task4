@@ -1,32 +1,28 @@
 IN AX
-PUSH 1
-POP BX #result
-PUSH 1
-POP CX # cx = i = 1 - start
+PUSH AX
 CALL :fact
-:ret
-PUSH BX
+
 OUT
 HLT
 
 :fact
-CALL :AX=CX
+POP AX
 
-PUSH CX #CX += 1
-PUSH 1
-ADD
-POP CX
-
-PUSH CX
-PUSH BX
-MUL
-POP BX
-JMP :fact
-
-:AX=CX
 PUSH AX
-PUSH CX
-JE :ret
+PUSH 1
+JE :base #if AX = 1
+
+PUSH AX
+
+PUSH AX #AX -= 1
+PUSH 1
+SUB
+
+CALL :fact
+MUL #N * fact(N - 1)
 RET
 
+:base
+PUSH 1
+RET
 

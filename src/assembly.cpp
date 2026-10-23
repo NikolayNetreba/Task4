@@ -13,20 +13,19 @@ int main() {
         .currentByte = 0,
         .labelTable = (label*)calloc(inputSize / 2, sizeof(label)),
         .currentNumber = 0,
-        .pass = 1
+        .pass = 1 // Aisle number
     };
 
-    // Первый проход (сбор меток)
+    // First pass (collecting labels)
     assembly(&ctx);
 
     ctx.currentByte = 0;
     rewind(ctx.input);
     ctx.pass = 2;
 
-    // Второй проход (генерация байткода)
+    // Second pass (bytecode generation)
     assembly(&ctx);
 
-    // Запись результата в файл
     write_to_file(ctx.byteCode, ctx.currentByte);
 
     fclose(ctx.input);
@@ -250,9 +249,15 @@ void assembly(AsmContext* ctx) {
 void write_to_file(uint8_t* byteCode, size_t currentByte) {
     assert(byteCode);
 
+    SPU_Header header = { };
+    header.signature = SPU_SIGNATURE;
+    header.version = SPU_VERSION;
+    header.code_size = currentByte;
+
     int byteCodeFile = open("byte_code.bin", O_WRONLY | O_CREAT | O_TRUNC, 0644);
     assert(byteCodeFile != ERROR_VALUE && "Error opening");
 
+    write(byteCodeFile, &header, sizeof(SPU_Header));
     write(byteCodeFile, byteCode, currentByte);
 
     close(byteCodeFile);
