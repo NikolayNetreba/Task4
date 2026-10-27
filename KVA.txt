@@ -26,6 +26,8 @@ JA :D>0
 HLT
 
 :D>0
+PUSH 2
+OUT
 CALL :calcX1
 CALL :calcX2
 HLT
@@ -36,12 +38,13 @@ OUT
 HLT
 
 :D=0
+PUSH 1
+OUT
 CALL :calcX1
 HLT
 
 :calcX1
 PUSH JF
-SQRT
 PUSH BX
 PUSH -1
 MUL
@@ -58,7 +61,6 @@ PUSH BX
 PUSH -1
 MUL
 PUSH JF
-SQRT
 SUB
 PUSH AX
 PUSH 2
@@ -82,6 +84,8 @@ PUSH -1
 MUL
 PUSH BX
 DIV
+PUSH 1 #count of roots
+OUT
 OUT
 HLT
 

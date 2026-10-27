@@ -124,12 +124,17 @@ const argOp argView[] = {
 const size_t REG_CNT = sizeof(argView) / sizeof(argOp);
 
 typedef struct {
-    FILE* input; // Файл для чтения
+    char* source_code; // буфер с исходником
+    size_t source_size;
+    size_t current_pos; // Текущая позиция в буфере
+    size_t current_line; // Текущая строка (для вывода ошибок)
+
     uint8_t* byteCode; // Выходной массив байткода
     size_t currentByte; // Текущая позиция в массиве байткода
     label* labelTable; // Таблица меток
     size_t currentNumber; // Текущее количество меток
     int pass; // Номер прохода (1 или 2)
+    int error_count;
 } AsmContext;
 
 typedef struct {
@@ -146,3 +151,4 @@ off_t get_file_size(FILE* file);
 void write_to_file(uint8_t* byteCode, size_t currentByte);
 
 void assembly(AsmContext* ctx);
+bool is_jump_command(command_code opCode);

@@ -99,85 +99,66 @@ ErrorsCalc out_value(stack_t* stack) {
     return CALC_OK;
 }
 
-void push(spu_t* spu, uint8_t opType) {
-    assert(spu && spu->stk);
-
-    elem_t arg = 0;
+elem_t* get_arg_ptr(spu_t* spu, uint8_t opType, bool is_modify) {
+    static elem_t arg = 0;
     elem_t temp = 0;
+    elem_t* res = NULL;
 
-    if (opType & (1 << 5)) { // DEC
+    if (opType & (1 << 5)) {
         memcpy(&temp, &spu->byteCode[spu->cIp], sizeof(elem_t));
         spu->cIp += sizeof(elem_t);
 
-        if ((opType & (1 << 7)) == 0 && (opType & (1 << 6)) == 0) {
-            arg += temp * accuracy;
+        if ((opType & (1 << 6)) == 0 && (opType & (1 << 7)) == 0) {
+            if (is_modify) {
+                assert(0 && "sintaxis fault POP/IN into Const");
+            }
+
+            arg = temp * accuracy;
+            res = &arg;
         } else {
             arg += temp;
         }
     }
 
-    if (opType & (1 << 6)) { // REG
+    if (opType & (1 << 6)) {
         memcpy(&temp, &spu->byteCode[spu->cIp], sizeof(elem_t));
         spu->cIp += sizeof(elem_t);
 
         if (opType & (1 << 7)) {
             arg += spu->reg[temp - AX_CODE] / accuracy;
         } else {
-            arg += spu->reg[temp - AX_CODE];
+            res = &spu->reg[temp - AX_CODE];
         }
     }
 
-    if (opType & (1 << 7)) { // RAM
-        if (arg >= 0 && arg < RAM_SIZE)
-            arg = spu->ram[arg];
-        else {
-            fprintf(stderr, "RAM segmentation fault");
-            abort();
+    if (opType & (1 << 7)) {
+        if (arg >= 0 && arg < RAM_SIZE) {
+            res = &spu->ram[arg];
+        } else {
+            assert(0 && "RAM segmentation fault");
         }
     }
 
-    push_stack(spu->stk, arg);
+    return res;
+}
+
+void push(spu_t* spu, uint8_t opType) {
+    assert(spu && spu->stk);
+
+    elem_t* arg = get_arg_ptr(spu, opType, false);
+
+    push_stack(spu->stk, *arg);
 }
 
 void pop(spu_t* spu, uint8_t opType) {
     assert(spu && spu->stk);
 
     elem_t val = 0;
-    elem_t arg = 0;
-    elem_t temp = 0;
     pop_stack(spu->stk, &val);
 
-    if (opType & (1 << 5)) { // DEC
-        memcpy(&temp, &spu->byteCode[spu->cIp], sizeof(elem_t));
-        spu->cIp += sizeof(elem_t);
+    elem_t* arg = get_arg_ptr(spu, opType, true);
 
-        if ((opType & (1 << 7)) == 0 && (opType & (1 << 6)) == 0) {
-            fprintf(stderr, "sintaxis fault POP Const");
-            abort();
-        } else {
-            arg += temp;
-        }
-    }
-
-    if (opType & (1 << 6)) { // REG
-        memcpy(&temp, &spu->byteCode[spu->cIp], sizeof(elem_t));
-        spu->cIp += sizeof(elem_t);
-
-        if (opType & (1 << 7)) { // RAM[REG]
-            arg += spu->reg[temp - AX_CODE] / accuracy;
-        } else {
-            spu->reg[temp - AX_CODE] = val;
-        }
-    }
-
-    if (opType & (1 << 7)) { // RAM
-        if (arg >= 0 && arg < RAM_SIZE)
-            spu->ram[arg] = val;
-        else {
-            fprintf(stderr, "RAM segmentation fault");
-            abort();
-        }
-    }
+    *arg = val;
 }
 
 void do_in(spu_t* spu, uint8_t opType) {
@@ -198,40 +179,9 @@ void do_in(spu_t* spu, uint8_t opType) {
         return;
     }
 
-    elem_t arg = 0;
-    elem_t temp = 0;
+    elem_t* arg = get_arg_ptr(spu, opType, true);
 
-    if (opType & (1 << 5)) { // DEC
-        memcpy(&temp, &spu->byteCode[spu->cIp], sizeof(elem_t));
-        spu->cIp += sizeof(elem_t);
-
-        if ((opType & (1 << 7)) == 0 && (opType & (1 << 6)) == 0) {
-            fprintf(stderr, "sintaxis fault IN into Const");
-            abort();
-        } else {
-            arg += temp;
-        }
-    }
-
-    if (opType & (1 << 6)) { // REG
-        memcpy(&temp, &spu->byteCode[spu->cIp], sizeof(elem_t));
-        spu->cIp += sizeof(elem_t);
-
-        if (opType & (1 << 7)) {
-            arg += spu->reg[temp - AX_CODE] / accuracy;
-        } else {
-            spu->reg[temp - AX_CODE] = val;
-        }
-    }
-
-    if (opType & (1 << 7)) { // RAM
-        if (arg >= 0 && arg < RAM_SIZE)
-            spu->ram[arg] = val;
-        else {
-            fprintf(stderr, "RAM segmentation fault");
-            abort();
-        }
-    }
+    *arg = val;
 }
 
 elem_t get_jmp_arg(spu_t* spu) {
@@ -273,8 +223,8 @@ void calc_disc(spu_t* spu) {
     push_stack(spu->stk, DD * accuracy);
 }
 void print_ram(spu_t* spu) {
-    for (int i = 0; i < 100; i++) {
-        if (i % 10 == 0) {
+    for (int i = 0; i < 400; i++) {
+        if (i % 20 == 0) {
             printf("\n");
         }
         if (spu->ram[i])

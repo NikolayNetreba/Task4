@@ -1,24 +1,30 @@
-IN AX
-PUSH AX
+IN 4
+PUSH
+AX
 CALL :fact
 
-OUT
+OUT AX
 HLT
 
-:fact
+:fact AX
 POP AX
 
-PUSH AX
+PUSH AX 123
 PUSH 1
 JE :base #if AX = 1
-
-PUSH AX
 
 PUSH AX #AX -= 1
 PUSH 1
 SUB
 
 CALL :fact
+
+PUSH AX
+PUSH 1
+ADD
+POP AX
+PUSH AX
+
 MUL #N * fact(N - 1)
 RET
 

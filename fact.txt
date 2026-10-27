@@ -14,15 +14,20 @@ JE :base #if AX = 1
 
 PUSH AX
 
-PUSH AX #AX -= 1
+PUSH AX
 PUSH 1
 SUB
 
 CALL :fact
-MUL #N * fact(N - 1)
+
+POP BX
+POP AX
+PUSH BX
+PUSH AX
+
+MUL # fact(N - 1)* N
 RET
 
 :base
 PUSH 1
 RET
-

@@ -2,8 +2,13 @@
 #include "colors.h"
 #include "commands.h"
 
-int main() {
-    const int byte_code_fd = get_file_dp("byte_code.bin");
+int main(int argc, char* argv[]) {
+    char* file_name = "byte_code.bin";
+    if (argc == 2) {
+        file_name = argv[1];
+    }
+
+    const int byte_code_fd = get_file_dp(file_name);
 
     off_t byte_code_size = 0;
     if (!validate_header(byte_code_fd, &byte_code_size)) {
@@ -31,7 +36,7 @@ int main() {
         command_code opCode = (command_code)(spu.byteCode[spu.cIp] & 31);
         uint8_t opType = spu.byteCode[spu.cIp++] & (7 << 5);
 
-        switch (opCode) { // TODO сделать бинпоиск по структуре из кода команды и указателя на функцию.
+        switch (opCode) {
         case PUSH_CODE: {
             push(&spu, opType);
 

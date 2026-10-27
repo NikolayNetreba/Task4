@@ -1,0 +1,33 @@
+IN AX
+PUSH AX
+CALL :fact
+
+OUT
+HLT
+
+:fact
+POP AX
+
+PUSH AX
+PUSH 1
+JE :base #if AX = 1
+
+PUSH AX #AX -= 1
+PUSH 1
+SUB
+
+CALL :fact
+
+PUSH AX
+PUSH 1
+ADD
+POP AX
+PUSH AX
+
+MUL #N * fact(N - 1)
+RET
+
+:base
+PUSH 1
+RET
+
