@@ -22,7 +22,6 @@ int main(int argc, char* argv[]) {
 
     off_t inputSize = fileInfo.st_size;
 
-    // 2. Чтение всего файла в буфер
     char* source_buffer = (char*)calloc(inputSize + 1, sizeof(char));
     if (read(fd, source_buffer, inputSize) < 0) {
         perror("Error reading file");

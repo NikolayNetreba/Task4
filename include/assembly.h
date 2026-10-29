@@ -19,14 +19,13 @@
 #define BUFFER_SIZE 64
 #define SPEC_BUFFER_SIZE "63"
 
-#define SPU_SIGNATURE 0x31555053 // "SPU1"
-#define SPU_VERSION 1
+#define SPU_SIGNATURE 0x31555053 // "1UPS"
+#define SPU_VERSION 2
 
 typedef struct {
     uint32_t signature;
     uint32_t version;
-    size_t code_size;
-    uint64_t hash;
+    uint32_t code_size;
 } SPU_Header;
 
 typedef struct {
